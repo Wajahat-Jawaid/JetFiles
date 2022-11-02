@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Jet Files</string>
+    <string name="close">Close</string>
+    <string name="export_page">Export page</string>
+    <string name="load_error">Can\'t find any files</string>
+    <string name="navigate_up">Navigate up</string>
+    <string name="retry">Retry</string>
+    <string name="star">Star</string>
+    <string name="search">Search</string>
+    <string name="search_here">Search here…</string>
+    <string name="starred">Starred</string>
+    <string name="tap_to_load_content">Tap to load content</string>
+    <string name="unstar">UnStar</string>
+
+    <!-- Permission dialog -->
+    <string name="permission_required_title">Permission required</string>
+    <string name="permission_required_message">Allow permission for storage access</string>
+    <string name="permission_required_button">Allow</string>
+</resources>
