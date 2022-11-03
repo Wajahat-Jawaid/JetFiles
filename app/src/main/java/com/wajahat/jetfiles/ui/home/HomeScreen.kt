@@ -1,6 +1,5 @@
 package com.wajahat.jetfiles.ui.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -73,83 +72,77 @@ fun HomeScreenContent(
         uiState: HomeUiState.HasFiles, modifier: Modifier
     ) -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(1f)
-            .background(Color.Green)
-    ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
-            scaffoldState = rememberScaffoldState(),
-            topBar = {
-                HomeAppBar(
-                    onSearchInputChanged = onSearchInputChanged
-                )
-            }
-        ) { innerPadding ->
-            val contentModifier = Modifier.padding(innerPadding)
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+        scaffoldState = rememberScaffoldState(),
+        topBar = {
+            HomeAppBar(
+                onSearchInputChanged = onSearchInputChanged
+            )
+        }
+    ) { innerPadding ->
+        val contentModifier = Modifier.padding(innerPadding)
 
-            LoadingContent(empty = when (uiState) {
-                is HomeUiState.HasFiles -> false
-                is HomeUiState.NoFiles -> uiState.isLoading
-            },
-                emptyContent = { FullScreenLoading() },
-                loading = uiState.isLoading,
-                onRefresh = onRefreshFiles,
-                content = {
-                    when (uiState) {
-                        // Render the files here
-                        is HomeUiState.HasFiles -> hasFilesContent(uiState, contentModifier)
-                        is HomeUiState.NoFiles -> {
-                            if (uiState.errorMessages.isEmpty()) {
-                                // if there are no files, and no error, let the user refresh manually
-                                TextButton(
-                                    // Cover the refresh view half of width and height
-                                    modifier = modifier.fillMaxSize(0.5f),
-                                    onClick = onRefreshFiles
-                                ) {
-                                    Text(
-                                        stringResource(id = R.string.tap_to_load_content),
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            } else {
-                                // there's currently an error showing, don't show any content
-                                Box(contentModifier.fillMaxSize())
+        LoadingContent(empty = when (uiState) {
+            is HomeUiState.HasFiles -> false
+            is HomeUiState.NoFiles -> uiState.isLoading
+        },
+            emptyContent = { FullScreenLoading() },
+            loading = uiState.isLoading,
+            onRefresh = onRefreshFiles,
+            content = {
+                when (uiState) {
+                    // Render the files here
+                    is HomeUiState.HasFiles -> hasFilesContent(uiState, contentModifier)
+                    is HomeUiState.NoFiles -> {
+                        if (uiState.errorMessages.isEmpty()) {
+                            // if there are no files, and no error, let the user refresh manually
+                            TextButton(
+                                // Cover the refresh view half of width and height
+                                modifier = modifier.fillMaxSize(0.5f),
+                                onClick = onRefreshFiles
+                            ) {
+                                Text(
+                                    stringResource(id = R.string.tap_to_load_content),
+                                    textAlign = TextAlign.Center
+                                )
                             }
+                        } else {
+                            // there's currently an error showing, don't show any content
+                            Box(contentModifier.fillMaxSize())
                         }
                     }
-                })
-        }
-
-        // Process first error message and display that on the SnackBar
-        if (uiState.errorMessages.isNotEmpty()) {
-            // Remember the errorMessage to display on the screen
-            val errorMessage = remember(uiState) { uiState.errorMessages[0] }
-
-            // Get the text to show on the message from resources
-            val errorMessageText = stringResource(errorMessage.messageId)
-            val retryMessageText = stringResource(id = R.string.retry)
-
-            // If onRefreshFiles or onErrorDismiss change while the LaunchedEffect is running,
-            // don't restart the effect and use the latest lambda values.
-            val onRefreshPostsState by rememberUpdatedState(onRefreshFiles)
-            val onErrorDismissState by rememberUpdatedState(onErrorDismiss)
-
-            // Effect running in a coroutine that displays the SnackBar on the screen
-            // If there's a change to errorMessageText, retryMessageText or snackBarHostState,
-            // the previous effect will be cancelled and a new one will start with the new values
-            LaunchedEffect(errorMessageText, retryMessageText, snackBarHostState) {
-                val snackBarResult = snackBarHostState.showSnackbar(
-                    message = errorMessageText, actionLabel = retryMessageText
-                )
-                if (snackBarResult == SnackbarResult.ActionPerformed) {
-                    onRefreshPostsState()
                 }
-                // Once the message is displayed and dismissed, notify the ViewModel
-                onErrorDismissState(errorMessage.id)
+            })
+    }
+
+    // Process first error message and display that on the SnackBar
+    if (uiState.errorMessages.isNotEmpty()) {
+        // Remember the errorMessage to display on the screen
+        val errorMessage = remember(uiState) { uiState.errorMessages[0] }
+
+        // Get the text to show on the message from resources
+        val errorMessageText = stringResource(errorMessage.messageId)
+        val retryMessageText = stringResource(id = R.string.retry)
+
+        // If onRefreshFiles or onErrorDismiss change while the LaunchedEffect is running,
+        // don't restart the effect and use the latest lambda values.
+        val onRefreshPostsState by rememberUpdatedState(onRefreshFiles)
+        val onErrorDismissState by rememberUpdatedState(onErrorDismiss)
+
+        // Effect running in a coroutine that displays the SnackBar on the screen
+        // If there's a change to errorMessageText, retryMessageText or snackBarHostState,
+        // the previous effect will be cancelled and a new one will start with the new values
+        LaunchedEffect(errorMessageText, retryMessageText, snackBarHostState) {
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = errorMessageText, actionLabel = retryMessageText
+            )
+            if (snackBarResult == SnackbarResult.ActionPerformed) {
+                onRefreshPostsState()
             }
+            // Once the message is displayed and dismissed, notify the ViewModel
+            onErrorDismissState(errorMessage.id)
         }
     }
 }
