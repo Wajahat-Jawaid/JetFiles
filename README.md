@@ -1,5 +1,7 @@
 # JetFiles
 
+An illustration of how you can employ Jetpack Compose to access media storage in Android
+
 https://user-images.githubusercontent.com/13690429/200324386-14ecd5f0-09c8-4ebe-9941-e3dd40258392.mp4
 
 <br />
