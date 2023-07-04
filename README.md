@@ -1,6 +1,6 @@
 # JetFiles
 
-An illustration of how you can employ Jetpack Compose to access media storage in Android. The app is based on <a href="https://developer.android.com/topic/architecture?gclsrc=ds">Android developers architecture</a> developed with href="https://developer.android.com/jetpack/compose">Jetpack Compose</a>.
+An illustration of how you can employ Jetpack Compose to access media storage in Android. The app is based on <a href="https://developer.android.com/topic/architecture?gclsrc=ds">Android developers architecture</a> developed with <a href="https://developer.android.com/jetpack/compose">Jetpack Compose</a>.
 
 https://user-images.githubusercontent.com/13690429/200324386-14ecd5f0-09c8-4ebe-9941-e3dd40258392.mp4
 
