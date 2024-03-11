@@ -43,7 +43,7 @@ fun FileCard(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(vertical = 10.dp)
+                .padding(vertical = 20.dp)
         ) {
             PostTitle(file)
             Spacer(modifier = Modifier.height(3.dp))
